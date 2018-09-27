@@ -12,27 +12,19 @@ namespace eval CSlider {
 
 		rename ::$name ::mega$name
 
-		set script [concat { proc } ::$name { { args } {
-				set option [lindex $args 0]
+		proc ::$name { args } {
+			set name [lindex [info level 0] 0]
+			set option [lindex $args 0]
 
-				if {[string compare $option configure] == 0 } {
-					set width [lindex $args 1]
-					set height [lindex $args 2]
-					} $name {{coords $bar 40 0 41 50}
-					after 1 
-				}	
-			}
+			if {[string compare $option configure] == 0 } {
+				set width [lindex $args 1]
+				set height [lindex $args 2]
+				$name coords $bar 40 0 41 $height
+	        }	
+	    }
 
-		}]
-
-		puts $name
-		eval $script
-		return $name
+	return $name
 	}
-
-proc ::w {} {
-	puts WWWWWWWWWWWWWWWW
-}
 }
 
 proc cslider { name } {
@@ -43,8 +35,7 @@ proc cslider { name } {
 
 proc main {} {
 	pack [cslider .c] -fill both -expand yes
-	.c configure 40 50
-	#bind .c <Configure> { ::%W configure %w %h }
+	bind .c <Configure> { %W configure %w %h }
 }
 
 main
